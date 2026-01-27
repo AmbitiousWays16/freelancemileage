@@ -13,29 +13,6 @@ export const usePrograms = () => {
   const { user } = useAuth();
   const [programs, setPrograms] = useState<Program[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  const checkAdminStatus = useCallback(async () => {
-    if (!user) {
-      setIsAdmin(false);
-      return;
-    }
-
-    try {
-      const { data, error } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user.id)
-        .eq('role', 'admin')
-        .maybeSingle();
-
-      if (error) throw error;
-      setIsAdmin(!!data);
-    } catch (error) {
-      console.error('Error checking admin status:', error);
-      setIsAdmin(false);
-    }
-  }, [user]);
 
   const fetchPrograms = useCallback(async () => {
     try {
@@ -56,7 +33,7 @@ export const usePrograms = () => {
       setPrograms(formattedPrograms);
     } catch (error) {
       console.error('Error fetching programs:', error);
-      toast.error('Failed to load programs');
+      toast.error('Failed to load clients/projects');
     } finally {
       setLoading(false);
     }
@@ -66,25 +43,15 @@ export const usePrograms = () => {
     fetchPrograms();
   }, [fetchPrograms]);
 
-  // Separate effect for admin status that re-runs when user changes
-  useEffect(() => {
-    checkAdminStatus();
-  }, [checkAdminStatus, user]);
-
   const addProgram = useCallback(async (name: string, address: string = ''): Promise<Program | null> => {
     if (!user) {
-      toast.error('You must be logged in to add programs');
-      return null;
-    }
-
-    if (!isAdmin) {
-      toast.error('Only admins can add programs');
+      toast.error('You must be logged in to add clients/projects');
       return null;
     }
 
     const trimmedName = name.trim();
     if (!trimmedName) {
-      toast.error('Program name cannot be empty');
+      toast.error('Name cannot be empty');
       return null;
     }
 
@@ -93,7 +60,7 @@ export const usePrograms = () => {
       (p) => p.name.toLowerCase() === trimmedName.toLowerCase()
     );
     if (duplicate) {
-      toast.error('A program with this name already exists');
+      toast.error('A client/project with this name already exists');
       return null;
     }
 
@@ -117,22 +84,17 @@ export const usePrograms = () => {
       };
 
       setPrograms((prev) => [...prev, newProgram].sort((a, b) => a.name.localeCompare(b.name)));
-      toast.success('Program added successfully');
+      toast.success('Client/project added successfully');
       return newProgram;
     } catch (error) {
       console.error('Error adding program:', error);
-      toast.error('Failed to add program');
+      toast.error('Failed to add client/project');
       return null;
     }
-  }, [user, programs, isAdmin]);
+  }, [user, programs]);
 
   const updateProgram = useCallback(async (id: string, updates: { name?: string; address?: string }): Promise<boolean> => {
     if (!user) return false;
-
-    if (!isAdmin) {
-      toast.error('Only admins can update programs');
-      return false;
-    }
 
     const trimmedName = updates.name?.trim();
 
@@ -142,7 +104,7 @@ export const usePrograms = () => {
         (p) => p.id !== id && p.name.toLowerCase() === trimmedName.toLowerCase()
       );
       if (duplicate) {
-        toast.error('A program with this name already exists');
+        toast.error('A client/project with this name already exists');
         return false;
       }
     }
@@ -164,22 +126,17 @@ export const usePrograms = () => {
           .map((p) => (p.id === id ? { ...p, ...updates } : p))
           .sort((a, b) => a.name.localeCompare(b.name))
       );
-      toast.success('Program updated successfully');
+      toast.success('Client/project updated successfully');
       return true;
     } catch (error) {
       console.error('Error updating program:', error);
-      toast.error('Failed to update program');
+      toast.error('Failed to update client/project');
       return false;
     }
-  }, [user, programs, isAdmin]);
+  }, [user, programs]);
 
   const deleteProgram = useCallback(async (id: string): Promise<boolean> => {
     if (!user) return false;
-
-    if (!isAdmin) {
-      toast.error('Only admins can delete programs');
-      return false;
-    }
 
     try {
       const { error } = await supabase
@@ -190,19 +147,18 @@ export const usePrograms = () => {
       if (error) throw error;
 
       setPrograms((prev) => prev.filter((p) => p.id !== id));
-      toast.success('Program deleted successfully');
+      toast.success('Client/project deleted successfully');
       return true;
     } catch (error) {
       console.error('Error deleting program:', error);
-      toast.error('Failed to delete program');
+      toast.error('Failed to delete client/project');
       return false;
     }
-  }, [user, isAdmin]);
+  }, [user]);
 
   return {
     programs,
     loading,
-    isAdmin,
     addProgram,
     updateProgram,
     deleteProgram,

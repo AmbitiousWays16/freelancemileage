@@ -78,25 +78,25 @@ export const ProgramManager = ({
       </DialogTrigger>
       <DialogContent className="max-h-[80vh] overflow-y-auto sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>Manage Programs</DialogTitle>
+          <DialogTitle>Manage Clients/Projects</DialogTitle>
           <DialogDescription>
-            Add, edit, or remove programs. Set a default address for each program to auto-fill the
+            Add, edit, or remove clients/projects. Set a default address for each to auto-fill the
             destination.
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 pt-4">
-          {/* Add new program */}
+          {/* Add new client/project */}
           <div className="rounded-lg border bg-muted/30 p-4">
-            <h4 className="mb-3 text-sm font-medium">Add New Program</h4>
+            <h4 className="mb-3 text-sm font-medium">Add New Client/Project</h4>
             <div className="space-y-3">
               <div>
                 <Label htmlFor="new-name" className="text-xs">
-                  Program Name
+                  Name
                 </Label>
                 <Input
                   id="new-name"
-                  placeholder="e.g., Hospital Visit"
+                  placeholder="e.g., Acme Corp"
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
                   className="mt-1"
@@ -121,20 +121,20 @@ export const ProgramManager = ({
                 className="w-full"
               >
                 {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Plus className="mr-2 h-4 w-4" />}
-                Add Program
+                Add Client/Project
               </Button>
             </div>
           </div>
 
-          {/* Program list */}
+          {/* Client/project list */}
           <div className="space-y-2">
-            <h4 className="text-sm font-medium">Current Programs</h4>
+            <h4 className="text-sm font-medium">Your Clients/Projects</h4>
             {loading ? (
               <div className="flex items-center justify-center py-8">
                 <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
               </div>
             ) : programs.length === 0 ? (
-              <p className="py-4 text-center text-sm text-muted-foreground">No programs yet</p>
+              <p className="py-4 text-center text-sm text-muted-foreground">No clients/projects yet</p>
             ) : (
               <div className="space-y-2">
                 {programs.map((program) => (
