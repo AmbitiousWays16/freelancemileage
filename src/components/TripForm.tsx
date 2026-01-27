@@ -36,8 +36,8 @@ const tripFormSchema = z.object({
     .min(1, 'Business purpose is required')
     .max(500, 'Business purpose is too long (max 500 characters)'),
   program: z.string()
-    .min(1, 'Program is required')
-    .max(200, 'Program name is too long'),
+    .min(1, 'Client/project is required')
+    .max(200, 'Client/project name is too long'),
 });
 
 interface TripFormProps {
@@ -196,11 +196,11 @@ export const TripForm = ({
             <div className="space-y-2">
               <Label htmlFor="program" className="flex items-center gap-1.5 text-sm font-medium">
                 <FileText className="h-3.5 w-3.5 text-muted-foreground" />
-                Program
+                Client/Project
               </Label>
               <Select value={program} onValueChange={handleProgramChange}>
                 <SelectTrigger className="h-10">
-                  <SelectValue placeholder={programsLoading ? 'Loading...' : 'Select program'} />
+                  <SelectValue placeholder={programsLoading ? 'Loading...' : 'Select client/project'} />
                 </SelectTrigger>
                 <SelectContent>
                   {programs.map((p) => (

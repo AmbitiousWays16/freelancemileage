@@ -4,7 +4,6 @@ import { TripList } from '@/components/TripList';
 import { MileageSummary } from '@/components/MileageSummary';
 import { MonthSelector } from '@/components/MonthSelector';
 import { ArchivePromptDialog } from '@/components/ArchivePromptDialog';
-import { VoucherSubmitDialog } from '@/components/VoucherSubmitDialog';
 import { useTrips } from '@/hooks/useTrips';
 import { usePrograms } from '@/hooks/usePrograms';
 import { supabase } from '@/integrations/supabase/client';
@@ -12,7 +11,7 @@ import { toast } from 'sonner';
 
 const Index = () => {
   const { trips, addTrip, deleteTrip, totalMiles, selectedMonth, changeMonth, isCurrentMonth, refetch } = useTrips();
-  const { programs, loading: programsLoading, isAdmin, addProgram, updateProgram, deleteProgram } = usePrograms();
+  const { programs, loading: programsLoading, addProgram, updateProgram, deleteProgram } = usePrograms();
 
   const handleCalculateRoute = async (from: string, to: string) => {
     console.log('Starting route calculation...', { from: from.substring(0, 20), to: to.substring(0, 20) });
@@ -86,16 +85,7 @@ const Index = () => {
       <Header trips={trips} totalMiles={totalMiles} />
       
       <main className="container mx-auto space-y-6 px-4 py-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <MonthSelector selectedMonth={selectedMonth} onMonthChange={changeMonth} />
-          {isCurrentMonth && (
-            <VoucherSubmitDialog 
-              selectedMonth={selectedMonth} 
-              trips={trips} 
-              totalMiles={totalMiles} 
-            />
-          )}
-        </div>
+        <MonthSelector selectedMonth={selectedMonth} onMonthChange={changeMonth} />
         <MileageSummary trips={trips} totalMiles={totalMiles} />
         
         <div className="grid gap-6 lg:grid-cols-2">
@@ -105,7 +95,7 @@ const Index = () => {
               onCalculateRoute={handleCalculateRoute}
               programs={programs}
               programsLoading={programsLoading}
-              isAdmin={isAdmin}
+              isAdmin={true}
               onAddProgram={addProgram}
               onUpdateProgram={updateProgram}
               onDeleteProgram={deleteProgram}

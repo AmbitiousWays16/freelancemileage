@@ -7,10 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Car } from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import westcareLogo from '@/assets/westcare-auth-logo.png';
 
 // Strong password validation schema
 const passwordSchema = z
@@ -155,11 +154,9 @@ const Auth = () => {
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <div className="mx-auto mb-4">
-              <img 
-                src={westcareLogo} 
-                alt="WestCare California" 
-                className="h-32 w-auto mx-auto rounded-lg"
-              />
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl gradient-primary mx-auto">
+                <Car className="h-8 w-8 text-primary-foreground" />
+              </div>
             </div>
             <CardTitle className="text-2xl">Set Your Password</CardTitle>
             <CardDescription>
@@ -219,14 +216,12 @@ const Auth = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="mx-auto mb-4">
-            <img 
-              src={westcareLogo} 
-              alt="WestCare California" 
-              className="h-32 w-auto mx-auto rounded-lg"
-            />
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl gradient-primary mx-auto">
+              <Car className="h-8 w-8 text-primary-foreground" />
+            </div>
           </div>
           <CardTitle className="text-2xl">Mileage Tracker</CardTitle>
-          <CardDescription>Track your WestCare mileage for reimbursement</CardDescription>
+          <CardDescription>Track your freelance mileage for tax deductions</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="signin" className="w-full">
