@@ -1,6 +1,7 @@
 import { Car, LogOut } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ExportButton } from './ExportButton';
+import { HomeAddressSettings } from './HomeAddressSettings';
 import { Trip } from '@/types/mileage';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -8,9 +9,11 @@ import { Button } from '@/components/ui/button';
 interface HeaderProps {
   trips: Trip[];
   totalMiles: number;
+  homeAddress: string;
+  onSaveHomeAddress: (address: string) => Promise<void>;
 }
 
-export const Header = ({ trips, totalMiles }: HeaderProps) => {
+export const Header = ({ trips, totalMiles, homeAddress, onSaveHomeAddress }: HeaderProps) => {
   const { signOut, user } = useAuth();
 
   return (
@@ -29,6 +32,7 @@ export const Header = ({ trips, totalMiles }: HeaderProps) => {
         </div>
         <div className="flex items-center gap-2">
           <ExportButton trips={trips} totalMiles={totalMiles} />
+          <HomeAddressSettings homeAddress={homeAddress} onSave={onSaveHomeAddress} />
           <Button variant="ghost" size="icon" onClick={signOut} title="Sign out">
             <LogOut className="h-5 w-5" />
           </Button>
