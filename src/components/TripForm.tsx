@@ -34,6 +34,7 @@ interface TripFormProps {
   projects: Project[];
   homeAddress: string;
   clientsLoading: boolean;
+  isPremium: boolean;
   onAddClient: (name: string, address: string) => Promise<Client | null>;
   onUpdateClient: (id: string, updates: Partial<Pick<Client, 'name' | 'address'>>) => Promise<boolean>;
   onDeleteClient: (id: string) => Promise<boolean>;
@@ -45,7 +46,7 @@ interface TripFormProps {
 
 export const TripForm = ({
   onSubmit, onCalculateRoute,
-  clients, projects, homeAddress, clientsLoading,
+  clients, projects, homeAddress, clientsLoading, isPremium,
   onAddClient, onUpdateClient, onDeleteClient,
   onAddProject, onUpdateProject, onDeleteProject,
   getClientProjects,
@@ -56,6 +57,7 @@ export const TripForm = ({
   const [businessPurpose, setBusinessPurpose] = useState('');
   const [selectedClientId, setSelectedClientId] = useState('');
   const [selectedProjectId, setSelectedProjectId] = useState('');
+  const [freeClientName, setFreeClientName] = useState('');
   const [miles, setMiles] = useState<number>(0);
   const [routeUrl, setRouteUrl] = useState('');
   const [routeMapData, setRouteMapData] = useState<RouteMapData | null>(null);
@@ -90,8 +92,8 @@ export const TripForm = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const clientName = selectedClient?.name || '';
-    const projectName = selectedProject?.name || '';
+    const clientName = isPremium ? (selectedClient?.name || '') : freeClientName.trim();
+    const projectName = isPremium ? (selectedProject?.name || '') : '';
 
     const validation = tripFormSchema.safeParse({ date, fromAddress, toAddress, businessPurpose, clientName });
     if (!validation.success) { toast.error(validation.error.errors[0].message); return; }
@@ -113,11 +115,11 @@ export const TripForm = ({
     }
 
     setFromAddress(''); setToAddress(''); setBusinessPurpose('');
-    setSelectedClientId(''); setSelectedProjectId('');
+    setSelectedClientId(''); setSelectedProjectId(''); setFreeClientName('');
     setMiles(0); setRouteUrl(''); setRouteMapData(null); setIsRoundTrip(false);
   };
 
-  const isValid = date && fromAddress && toAddress && businessPurpose && selectedClientId && miles > 0;
+  const isValid = date && fromAddress && toAddress && businessPurpose && (isPremium ? selectedClientId : freeClientName.trim()) && miles > 0;
 
   // Build address suggestions from clients + projects
   const addressSuggestions = [
@@ -133,12 +135,14 @@ export const TripForm = ({
             <Car className="h-5 w-5 text-primary" />
             Add New Trip
           </span>
-          <ClientProjectManager
-            clients={clients} projects={projects} loading={clientsLoading}
-            onAddClient={onAddClient} onUpdateClient={onUpdateClient} onDeleteClient={onDeleteClient}
-            onAddProject={onAddProject} onUpdateProject={onUpdateProject} onDeleteProject={onDeleteProject}
-            getClientProjects={getClientProjects}
-          />
+          {isPremium && (
+            <ClientProjectManager
+              clients={clients} projects={projects} loading={clientsLoading}
+              onAddClient={onAddClient} onUpdateClient={onUpdateClient} onDeleteClient={onDeleteClient}
+              onAddProject={onAddProject} onUpdateProject={onUpdateProject} onDeleteProject={onDeleteProject}
+              getClientProjects={getClientProjects}
+            />
+          )}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -154,16 +158,20 @@ export const TripForm = ({
               <Label className="flex items-center gap-1.5 text-sm font-medium">
                 <FileText className="h-3.5 w-3.5 text-muted-foreground" /> Client
               </Label>
-              <Select value={selectedClientId} onValueChange={handleClientChange}>
-                <SelectTrigger className="h-10"><SelectValue placeholder={clientsLoading ? 'Loading...' : 'Select client'} /></SelectTrigger>
-                <SelectContent>
-                  {clients.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
-                </SelectContent>
-              </Select>
+              {isPremium ? (
+                <Select value={selectedClientId} onValueChange={handleClientChange}>
+                  <SelectTrigger className="h-10"><SelectValue placeholder={clientsLoading ? 'Loading...' : 'Select client'} /></SelectTrigger>
+                  <SelectContent>
+                    {clients.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              ) : (
+                <Input placeholder="Enter client name" value={freeClientName} onChange={e => setFreeClientName(e.target.value)} className="h-10" />
+              )}
             </div>
           </div>
 
-          {selectedClientId && clientProjects.length > 0 && (
+          {isPremium && selectedClientId && clientProjects.length > 0 && (
             <div className="space-y-2">
               <Label className="text-sm font-medium">Project (optional)</Label>
               <Select value={selectedProjectId} onValueChange={handleProjectChange}>
