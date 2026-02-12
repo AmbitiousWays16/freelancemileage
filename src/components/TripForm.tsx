@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { MapPin, Calendar, Car, FileText, Loader2, RotateCcw } from 'lucide-react';
+import { MapPin, Calendar, Car, FileText, Loader2, RotateCcw, Home } from 'lucide-react';
 import { Trip, RouteMapData } from '@/types/mileage';
 import { Program } from '@/hooks/usePrograms';
 import { ProgramManager } from './ProgramManager';
@@ -44,6 +44,7 @@ interface TripFormProps {
   onSubmit: (trip: Omit<Trip, 'id' | 'createdAt'>) => void;
   onCalculateRoute: (from: string, to: string) => Promise<{ miles: number; routeUrl: string; routeMapData?: RouteMapData } | null>;
   programs: Program[];
+  homeAddress: string;
   programsLoading: boolean;
   isAdmin: boolean;
   onAddProgram: (name: string, address: string) => Promise<Program | null>;
@@ -55,6 +56,7 @@ export const TripForm = ({
   onSubmit,
   onCalculateRoute,
   programs,
+  homeAddress,
   programsLoading,
   isAdmin,
   onAddProgram,
@@ -226,6 +228,18 @@ export const TripForm = ({
                 onChange={setFromAddress}
                 programs={programs}
               />
+              {homeAddress && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="mt-1"
+                  onClick={() => setFromAddress(homeAddress)}
+                >
+                  <Home className="mr-1.5 h-3.5 w-3.5" />
+                  Use Home
+                </Button>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="to" className="flex items-center gap-1.5 text-sm font-medium">
