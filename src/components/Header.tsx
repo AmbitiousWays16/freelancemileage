@@ -1,8 +1,10 @@
-import { Car, LogOut } from 'lucide-react';
+import { Car, LogOut, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ExportButton } from './ExportButton';
+import { InvoiceExport } from './InvoiceExport';
 import { HomeAddressSettings } from './HomeAddressSettings';
 import { Trip } from '@/types/mileage';
+import { Profile } from '@/hooks/useProfile';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 
@@ -11,10 +13,14 @@ interface HeaderProps {
   totalMiles: number;
   homeAddress: string;
   onSaveHomeAddress: (address: string) => Promise<void>;
+  profile: Profile | null;
 }
 
-export const Header = ({ trips, totalMiles, homeAddress, onSaveHomeAddress }: HeaderProps) => {
+export const Header = ({ trips, totalMiles, homeAddress, onSaveHomeAddress, profile }: HeaderProps) => {
   const { signOut, user } = useAuth();
+  const displayName = profile?.first_name
+    ? `${profile.first_name} ${profile.last_name}`.trim()
+    : user?.email;
 
   return (
     <header className="sticky top-0 z-10 border-b bg-card/80 backdrop-blur-sm">
@@ -26,11 +32,12 @@ export const Header = ({ trips, totalMiles, homeAddress, onSaveHomeAddress }: He
             </div>
             <div>
               <h1 className="text-xl font-bold text-foreground">Mileage Tracker</h1>
-              <p className="text-sm text-muted-foreground">{user?.email}</p>
+              <p className="text-sm text-muted-foreground">{displayName}</p>
             </div>
           </Link>
         </div>
         <div className="flex items-center gap-2">
+          <InvoiceExport trips={trips} profile={profile} />
           <ExportButton trips={trips} totalMiles={totalMiles} />
           <HomeAddressSettings homeAddress={homeAddress} onSave={onSaveHomeAddress} />
           <Button variant="ghost" size="icon" onClick={signOut} title="Sign out">

@@ -6,14 +6,19 @@ import { MonthSelector } from '@/components/MonthSelector';
 import { ArchivePromptDialog } from '@/components/ArchivePromptDialog';
 import { useTrips } from '@/hooks/useTrips';
 import { usePrograms } from '@/hooks/usePrograms';
-import { useHomeAddress } from '@/hooks/useHomeAddress';
+import { useProfile } from '@/hooks/useProfile';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 const Index = () => {
   const { trips, addTrip, deleteTrip, totalMiles, selectedMonth, changeMonth, isCurrentMonth, refetch } = useTrips();
   const { programs, loading: programsLoading, addProgram, updateProgram, deleteProgram } = usePrograms();
-  const { homeAddress, saveHomeAddress } = useHomeAddress();
+  const { profile, saveProfile } = useProfile();
+
+  const homeAddress = profile?.home_address || '';
+  const saveHomeAddress = async (address: string) => {
+    await saveProfile({ home_address: address });
+  };
 
   const handleCalculateRoute = async (from: string, to: string) => {
     console.log('Starting route calculation...', { from: from.substring(0, 20), to: to.substring(0, 20) });
@@ -84,7 +89,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <ArchivePromptDialog onExportComplete={refetch} />
-      <Header trips={trips} totalMiles={totalMiles} homeAddress={homeAddress} onSaveHomeAddress={saveHomeAddress} />
+      <Header trips={trips} totalMiles={totalMiles} homeAddress={homeAddress} onSaveHomeAddress={saveHomeAddress} profile={profile} />
       
       <main className="container mx-auto space-y-6 px-4 py-6">
         <MonthSelector selectedMonth={selectedMonth} onMonthChange={changeMonth} />
