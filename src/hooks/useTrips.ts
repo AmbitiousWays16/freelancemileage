@@ -12,15 +12,9 @@ export const useTrips = () => {
   const [selectedMonth, setSelectedMonth] = useState(new Date());
 
   const fetchTrips = useCallback(async (monthDate: Date = selectedMonth) => {
-    if (!user) {
-      setTrips([]);
-      setLoading(false);
-      return;
-    }
-
+    if (!user) { setTrips([]); setLoading(false); return; }
     try {
       setLoading(true);
-      // Get month boundaries for the selected month
       const monthStart = format(startOfMonth(monthDate), 'yyyy-MM-dd');
       const monthEnd = format(endOfMonth(monthDate), 'yyyy-MM-dd');
 
@@ -35,17 +29,12 @@ export const useTrips = () => {
       if (error) throw error;
 
       const formattedTrips: Trip[] = (data || []).map((trip) => {
-        // Parse routeMapData from static_map_url if it's stored as JSON
         let routeMapData: RouteMapData | undefined;
         if (trip.static_map_url) {
           try {
             const parsed = JSON.parse(trip.static_map_url);
-            if (parsed.encodedPolyline) {
-              routeMapData = parsed;
-            }
-          } catch {
-            // Not JSON - this is a legacy URL, ignore it
-          }
+            if (parsed.encodedPolyline) routeMapData = parsed;
+          } catch { /* legacy URL */ }
         }
 
         return {
@@ -53,6 +42,8 @@ export const useTrips = () => {
           date: trip.date,
           fromAddress: trip.from_address,
           toAddress: trip.to_address,
+          clientName: trip.client_name || trip.program || '',
+          projectName: trip.project_name || '',
           program: trip.program,
           businessPurpose: trip.purpose,
           miles: Number(trip.miles),
@@ -71,28 +62,15 @@ export const useTrips = () => {
     }
   }, [user, selectedMonth]);
 
-  useEffect(() => {
-    fetchTrips(selectedMonth);
-  }, [selectedMonth, user]);
+  useEffect(() => { fetchTrips(selectedMonth); }, [selectedMonth, user]);
 
-  const changeMonth = useCallback((newMonth: Date) => {
-    setSelectedMonth(newMonth);
-  }, []);
-
+  const changeMonth = useCallback((newMonth: Date) => { setSelectedMonth(newMonth); }, []);
   const isCurrentMonth = isSameMonth(selectedMonth, new Date());
 
   const addTrip = useCallback(async (trip: Omit<Trip, 'id' | 'createdAt'>) => {
-    if (!user) {
-      toast.error('You must be logged in to add trips');
-      return null;
-    }
-
+    if (!user) { toast.error('You must be logged in'); return null; }
     try {
-      // Store routeMapData as JSON string in static_map_url field (repurposed)
-      const staticMapUrlValue = trip.routeMapData 
-        ? JSON.stringify(trip.routeMapData) 
-        : null;
-
+      const staticMapUrlValue = trip.routeMapData ? JSON.stringify(trip.routeMapData) : null;
       const { data, error } = await supabase
         .from('trips')
         .insert({
@@ -100,47 +78,31 @@ export const useTrips = () => {
           date: trip.date,
           from_address: trip.fromAddress,
           to_address: trip.toAddress,
-          program: trip.program,
+          program: trip.clientName || trip.program,
           purpose: trip.businessPurpose,
           miles: trip.miles,
           route_url: trip.routeUrl || null,
           static_map_url: staticMapUrlValue,
+          client_name: trip.clientName,
+          project_name: trip.projectName,
         })
-        .select()
-        .single();
+        .select().single();
 
       if (error) throw error;
 
-      // Parse routeMapData from the stored JSON
       let routeMapData: RouteMapData | undefined;
       if (data.static_map_url) {
-        try {
-          const parsed = JSON.parse(data.static_map_url);
-          if (parsed.encodedPolyline) {
-            routeMapData = parsed;
-          }
-        } catch {
-          // Not JSON - ignore
-        }
+        try { const p = JSON.parse(data.static_map_url); if (p.encodedPolyline) routeMapData = p; } catch {}
       }
 
       const newTrip: Trip = {
-        id: data.id,
-        date: data.date,
-        fromAddress: data.from_address,
-        toAddress: data.to_address,
-        program: data.program,
-        businessPurpose: data.purpose,
-        miles: Number(data.miles),
-        routeUrl: data.route_url || undefined,
-        routeMapData,
-        createdAt: new Date(data.created_at),
+        id: data.id, date: data.date, fromAddress: data.from_address, toAddress: data.to_address,
+        clientName: data.client_name, projectName: data.project_name, program: data.program,
+        businessPurpose: data.purpose, miles: Number(data.miles),
+        routeUrl: data.route_url || undefined, routeMapData, createdAt: new Date(data.created_at),
       };
 
-      // Only add to local state if viewing current month
-      if (isCurrentMonth) {
-        setTrips((prev) => [newTrip, ...prev]);
-      }
+      if (isCurrentMonth) setTrips(prev => [newTrip, ...prev]);
       return newTrip;
     } catch (error) {
       console.error('Error adding trip:', error);
@@ -151,90 +113,46 @@ export const useTrips = () => {
 
   const deleteTrip = useCallback(async (id: string) => {
     if (!user) return;
-
     try {
-      const { error } = await supabase
-        .from('trips')
-        .delete()
-        .eq('id', id)
-        .eq('user_id', user.id);
-
+      const { error } = await supabase.from('trips').delete().eq('id', id).eq('user_id', user.id);
       if (error) throw error;
-
-      setTrips((prev) => prev.filter((t) => t.id !== id));
-    } catch (error) {
-      console.error('Error deleting trip:', error);
-      toast.error('Failed to delete trip');
-    }
+      setTrips(prev => prev.filter(t => t.id !== id));
+    } catch (error) { console.error(error); toast.error('Failed to delete trip'); }
   }, [user]);
 
   const updateTrip = useCallback(async (id: string, updates: Partial<Trip>) => {
     if (!user) return;
-
     try {
       const dbUpdates: Record<string, unknown> = {};
       if (updates.date !== undefined) dbUpdates.date = updates.date;
       if (updates.fromAddress !== undefined) dbUpdates.from_address = updates.fromAddress;
       if (updates.toAddress !== undefined) dbUpdates.to_address = updates.toAddress;
-      if (updates.program !== undefined) dbUpdates.program = updates.program;
+      if (updates.clientName !== undefined) { dbUpdates.client_name = updates.clientName; dbUpdates.program = updates.clientName; }
+      if (updates.projectName !== undefined) dbUpdates.project_name = updates.projectName;
       if (updates.businessPurpose !== undefined) dbUpdates.purpose = updates.businessPurpose;
       if (updates.miles !== undefined) dbUpdates.miles = updates.miles;
       if (updates.routeUrl !== undefined) dbUpdates.route_url = updates.routeUrl;
-      if (updates.routeMapData !== undefined) {
-        dbUpdates.static_map_url = updates.routeMapData 
-          ? JSON.stringify(updates.routeMapData) 
-          : null;
-      }
+      if (updates.routeMapData !== undefined) dbUpdates.static_map_url = updates.routeMapData ? JSON.stringify(updates.routeMapData) : null;
 
-      const { error } = await supabase
-        .from('trips')
-        .update(dbUpdates)
-        .eq('id', id)
-        .eq('user_id', user.id);
-
+      const { error } = await supabase.from('trips').update(dbUpdates).eq('id', id).eq('user_id', user.id);
       if (error) throw error;
-
-      setTrips((prev) =>
-        prev.map((t) => (t.id === id ? { ...t, ...updates } : t))
-      );
-    } catch (error) {
-      console.error('Error updating trip:', error);
-      toast.error('Failed to update trip');
-    }
+      setTrips(prev => prev.map(t => t.id === id ? { ...t, ...updates } : t));
+    } catch (error) { console.error(error); toast.error('Failed to update trip'); }
   }, [user]);
 
   const clearTrips = useCallback(async () => {
     if (!user) return;
-
     try {
-      const { error } = await supabase
-        .from('trips')
-        .delete()
-        .eq('user_id', user.id);
-
+      const { error } = await supabase.from('trips').delete().eq('user_id', user.id);
       if (error) throw error;
-
-      setTrips([]);
-      toast.success('All trips cleared');
-    } catch (error) {
-      console.error('Error clearing trips:', error);
-      toast.error('Failed to clear trips');
-    }
+      setTrips([]); toast.success('All trips cleared');
+    } catch (error) { console.error(error); toast.error('Failed to clear trips'); }
   }, [user]);
 
   const totalMiles = trips.reduce((sum, t) => sum + t.miles, 0);
 
   return {
-    trips,
-    loading,
-    addTrip,
-    deleteTrip,
-    updateTrip,
-    clearTrips,
-    totalMiles,
-    refetch: fetchTrips,
-    selectedMonth,
-    changeMonth,
-    isCurrentMonth,
+    trips, loading, addTrip, deleteTrip, updateTrip, clearTrips,
+    totalMiles, refetch: fetchTrips, selectedMonth, changeMonth, isCurrentMonth,
   };
 };

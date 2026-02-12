@@ -26,11 +26,11 @@ export const InvoiceExport = ({ trips, profile }: InvoiceExportProps) => {
   const [isExporting, setIsExporting] = useState(false);
   const [open, setOpen] = useState(false);
 
-  // Group trips by program/client
+  // Group trips by client
   const groupedTrips = useMemo(() => {
     const groups: Record<string, Trip[]> = {};
     trips.forEach(trip => {
-      const key = trip.program;
+      const key = trip.clientName || trip.program;
       if (!groups[key]) groups[key] = [];
       groups[key].push(trip);
     });
@@ -121,7 +121,7 @@ ${profile?.company_banner_url ? `<div style="margin-bottom:15px"><img src="${pro
   </div>
   <div class="party">
     <h3>Bill To</h3>
-    <p><strong>${escapeHtml(sorted[0].program)}</strong></p>
+    <p><strong>${escapeHtml(sorted[0].clientName || sorted[0].program)}</strong></p>
   </div>
 </div>
 <table>

@@ -12,10 +12,13 @@ export interface Trip {
   fromAddress: string;
   toAddress: string;
   businessPurpose: string;
+  clientName: string;
+  projectName: string;
+  /** @deprecated Use clientName/projectName instead */
   program: string;
   miles: number;
   routeUrl?: string;
-  /** @deprecated Use routeMapData instead - staticMapUrl exposed API keys */
+  /** @deprecated Use routeMapData instead */
   staticMapUrl?: string;
   routeMapData?: RouteMapData;
   createdAt: Date;

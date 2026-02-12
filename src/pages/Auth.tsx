@@ -283,8 +283,8 @@ const Auth = () => {
               <Car className="h-8 w-8 text-primary-foreground" />
             </div>
           </div>
-          <CardTitle className="text-2xl">Mileage Tracker</CardTitle>
-          <CardDescription>Track your freelance mileage for tax deductions</CardDescription>
+          <CardTitle className="text-2xl">MileTrack</CardTitle>
+          <CardDescription>Track your business mileage & generate invoices</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="signin" className="w-full">

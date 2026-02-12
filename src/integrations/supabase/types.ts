@@ -49,6 +49,39 @@ export type Database = {
           },
         ]
       }
+      clients: {
+        Row: {
+          address: string
+          created_at: string
+          email: string
+          id: string
+          name: string
+          phone: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address?: string
+          created_at?: string
+          email?: string
+          id?: string
+          name: string
+          phone?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          phone?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       mileage_vouchers: {
         Row: {
           created_at: string
@@ -163,14 +196,54 @@ export type Database = {
         }
         Relationships: []
       }
+      projects: {
+        Row: {
+          address: string
+          client_id: string
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address?: string
+          client_id: string
+          created_at?: string
+          id?: string
+          name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string
+          client_id?: string
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "projects_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       trips: {
         Row: {
+          client_name: string
           created_at: string
           date: string
           from_address: string
           id: string
           miles: number
           program: string
+          project_name: string
           purpose: string
           route_url: string | null
           static_map_url: string | null
@@ -179,12 +252,14 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          client_name?: string
           created_at?: string
           date: string
           from_address: string
           id?: string
           miles?: number
           program: string
+          project_name?: string
           purpose?: string
           route_url?: string | null
           static_map_url?: string | null
@@ -193,12 +268,14 @@ export type Database = {
           user_id: string
         }
         Update: {
+          client_name?: string
           created_at?: string
           date?: string
           from_address?: string
           id?: string
           miles?: number
           program?: string
+          project_name?: string
           purpose?: string
           route_url?: string | null
           static_map_url?: string | null

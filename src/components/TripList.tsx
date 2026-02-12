@@ -57,7 +57,7 @@ export const TripList = ({ trips, onDelete, totalMiles, isArchiveView = false }:
                           {format(parseISO(trip.date), 'MMM d, yyyy')}
                         </span>
                         <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
-                          {trip.program}
+                          {trip.clientName}{trip.projectName ? ` · ${trip.projectName}` : ''}
                         </span>
                         <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-bold text-accent">
                           {trip.miles.toFixed(1)} mi

@@ -58,7 +58,7 @@ export const Header = ({ trips, totalMiles, homeAddress, onSaveHomeAddress, prof
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl font-bold text-foreground">Mileage Tracker</h1>
+                <h1 className="text-xl font-bold text-foreground">MileTrack</h1>
                 {isPremium && (
                   <Badge variant="secondary" className="text-xs gap-1">
                     <Crown className="h-3 w-3" /> Premium
