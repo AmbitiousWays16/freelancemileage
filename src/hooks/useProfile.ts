@@ -11,6 +11,8 @@ export interface Profile {
   business_type: string;
   profile_completed: boolean;
   email: string | null;
+  company_logo_url: string;
+  company_banner_url: string;
 }
 
 export const useProfile = () => {
@@ -25,7 +27,7 @@ export const useProfile = () => {
     }
     const { data, error } = await supabase
       .from('profiles')
-      .select('first_name, last_name, home_address, business_address, business_type, profile_completed, email')
+      .select('first_name, last_name, home_address, business_address, business_type, profile_completed, email, company_logo_url, company_banner_url')
       .eq('user_id', user.id)
       .single();
     if (!error && data) {
@@ -52,5 +54,29 @@ export const useProfile = () => {
     return true;
   };
 
-  return { profile, loading, saveProfile, refetch: fetchProfile };
+  const uploadBranding = async (file: File, type: 'logo' | 'banner'): Promise<string | null> => {
+    if (!user) return null;
+    const ext = file.name.split('.').pop();
+    const path = `${user.id}/${type}.${ext}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('company-branding')
+      .upload(path, file, { upsert: true });
+
+    if (uploadError) {
+      toast.error(`Failed to upload ${type}`);
+      return null;
+    }
+
+    const { data: urlData } = supabase.storage
+      .from('company-branding')
+      .getPublicUrl(path);
+
+    const url = urlData.publicUrl;
+    const field = type === 'logo' ? 'company_logo_url' : 'company_banner_url';
+    await saveProfile({ [field]: url });
+    return url;
+  };
+
+  return { profile, loading, saveProfile, uploadBranding, refetch: fetchProfile };
 };

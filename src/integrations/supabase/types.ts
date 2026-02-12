@@ -92,6 +92,8 @@ export type Database = {
         Row: {
           business_address: string
           business_type: string
+          company_banner_url: string
+          company_logo_url: string
           created_at: string
           email: string | null
           first_name: string
@@ -105,6 +107,8 @@ export type Database = {
         Insert: {
           business_address?: string
           business_type?: string
+          company_banner_url?: string
+          company_logo_url?: string
           created_at?: string
           email?: string | null
           first_name?: string
@@ -118,6 +122,8 @@ export type Database = {
         Update: {
           business_address?: string
           business_type?: string
+          company_banner_url?: string
+          company_logo_url?: string
           created_at?: string
           email?: string | null
           first_name?: string

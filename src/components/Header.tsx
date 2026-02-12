@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ExportButton } from './ExportButton';
 import { InvoiceExport } from './InvoiceExport';
 import { HomeAddressSettings } from './HomeAddressSettings';
+import { CompanyBrandingUpload } from './CompanyBrandingUpload';
 import { Trip } from '@/types/mileage';
 import { Profile } from '@/hooks/useProfile';
 import { useAuth } from '@/contexts/AuthContext';
@@ -17,9 +18,11 @@ interface HeaderProps {
   homeAddress: string;
   onSaveHomeAddress: (address: string) => Promise<void>;
   profile: Profile | null;
+  onUploadBranding?: (file: File, type: 'logo' | 'banner') => Promise<string | null>;
+  onRemoveBranding?: (type: 'logo' | 'banner') => Promise<void>;
 }
 
-export const Header = ({ trips, totalMiles, homeAddress, onSaveHomeAddress, profile }: HeaderProps) => {
+export const Header = ({ trips, totalMiles, homeAddress, onSaveHomeAddress, profile, onUploadBranding, onRemoveBranding }: HeaderProps) => {
   const { signOut, user, isPremium } = useAuth();
   const displayName = profile?.first_name
     ? `${profile.first_name} ${profile.last_name}`.trim()
@@ -70,6 +73,9 @@ export const Header = ({ trips, totalMiles, homeAddress, onSaveHomeAddress, prof
           {isPremium ? (
             <>
               <InvoiceExport trips={trips} profile={profile} />
+              {onUploadBranding && onRemoveBranding && (
+                <CompanyBrandingUpload profile={profile} onUpload={onUploadBranding} onRemove={onRemoveBranding} />
+              )}
               <Button variant="ghost" size="sm" onClick={handleManageSubscription}>
                 Manage Plan
               </Button>
