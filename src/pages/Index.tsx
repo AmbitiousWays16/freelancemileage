@@ -14,7 +14,7 @@ import { toast } from 'sonner';
 const Index = () => {
   const { trips, addTrip, deleteTrip, totalMiles, selectedMonth, changeMonth, isCurrentMonth, refetch } = useTrips();
   const { programs, loading: programsLoading, addProgram, updateProgram, deleteProgram } = usePrograms();
-  const { profile, saveProfile } = useProfile();
+  const { profile, saveProfile, uploadBranding } = useProfile();
   const { isPremium } = useAuth();
 
   const homeAddress = profile?.home_address || '';
@@ -91,7 +91,17 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       {isPremium && <ArchivePromptDialog onExportComplete={refetch} />}
-      <Header trips={trips} totalMiles={totalMiles} homeAddress={homeAddress} onSaveHomeAddress={saveHomeAddress} profile={profile} />
+      <Header
+        trips={trips}
+        totalMiles={totalMiles}
+        homeAddress={homeAddress}
+        onSaveHomeAddress={saveHomeAddress}
+        profile={profile}
+        onUploadBranding={uploadBranding}
+        onRemoveBranding={async (type) => {
+          await saveProfile({ [type === 'logo' ? 'company_logo_url' : 'company_banner_url']: '' });
+        }}
+      />
       
       <main className="container mx-auto space-y-6 px-4 py-6">
         <MonthSelector selectedMonth={selectedMonth} onMonthChange={changeMonth} />
