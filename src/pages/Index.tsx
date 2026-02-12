@@ -4,8 +4,11 @@ import { TripList } from '@/components/TripList';
 import { MileageSummary } from '@/components/MileageSummary';
 import { MonthSelector } from '@/components/MonthSelector';
 import { ArchivePromptDialog } from '@/components/ArchivePromptDialog';
+import { GasExpenseForm } from '@/components/GasExpenseForm';
+import { GasExpenseList } from '@/components/GasExpenseList';
 import { useTrips } from '@/hooks/useTrips';
 import { useClients } from '@/hooks/useClients';
+import { useGasExpenses } from '@/hooks/useGasExpenses';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -21,6 +24,7 @@ const Index = () => {
   } = useClients();
   const { profile, saveProfile, uploadBranding } = useProfile();
   const { isPremium } = useAuth();
+  const { expenses, addExpense, deleteExpense, uploadReceipt, totalGasSpent, totalGallons } = useGasExpenses(selectedMonth);
 
   const homeAddress = profile?.home_address || '';
   const saveHomeAddress = async (address: string) => { await saveProfile({ home_address: address }); };
@@ -101,6 +105,27 @@ const Index = () => {
             isArchiveView={!isCurrentMonth}
           />
         </div>
+
+        {isPremium && (
+          <div className="grid gap-6 lg:grid-cols-2">
+            {isCurrentMonth && (
+              <GasExpenseForm
+                onSubmit={async (expense) => {
+                  const result = await addExpense(expense);
+                  if (result) toast.success('Gas expense added!');
+                  return result;
+                }}
+                onUploadReceipt={uploadReceipt}
+              />
+            )}
+            <GasExpenseList
+              expenses={expenses}
+              onDelete={deleteExpense}
+              totalGasSpent={totalGasSpent}
+              totalGallons={totalGallons}
+            />
+          </div>
+        )}
       </main>
     </div>
   );
