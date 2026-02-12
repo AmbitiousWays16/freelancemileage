@@ -101,6 +101,8 @@ export const ArchivePromptDialog = ({ onExportComplete }: ArchivePromptDialogPro
               date: trip.date,
               fromAddress: trip.from_address,
               toAddress: trip.to_address,
+              clientName: trip.client_name || trip.program || '',
+              projectName: trip.project_name || '',
               program: trip.program,
               businessPurpose: trip.purpose,
               miles: Number(trip.miles),
