@@ -90,26 +90,41 @@ export type Database = {
       }
       profiles: {
         Row: {
+          business_address: string
+          business_type: string
           created_at: string
           email: string | null
+          first_name: string
           home_address: string
           id: string
+          last_name: string
+          profile_completed: boolean
           updated_at: string
           user_id: string
         }
         Insert: {
+          business_address?: string
+          business_type?: string
           created_at?: string
           email?: string | null
+          first_name?: string
           home_address?: string
           id?: string
+          last_name?: string
+          profile_completed?: boolean
           updated_at?: string
           user_id: string
         }
         Update: {
+          business_address?: string
+          business_type?: string
           created_at?: string
           email?: string | null
+          first_name?: string
           home_address?: string
           id?: string
+          last_name?: string
+          profile_completed?: boolean
           updated_at?: string
           user_id?: string
         }

@@ -4,9 +4,11 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { useProfile } from "@/hooks/useProfile";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 import { Loader2 } from "lucide-react";
 
@@ -18,14 +20,12 @@ const TokenRedirectHandler = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
 
   useEffect(() => {
-    // Check URL hash for invite or recovery tokens
     const hash = window.location.hash;
     if (hash) {
       const hashParams = new URLSearchParams(hash.substring(1));
       const type = hashParams.get('type');
       const accessToken = hashParams.get('access_token');
       
-      // If this is an invite or recovery link, redirect to /auth with the hash preserved
       if ((type === 'invite' || type === 'recovery') && accessToken && location.pathname !== '/auth') {
         navigate('/auth' + hash, { replace: true });
       }
@@ -37,8 +37,9 @@ const TokenRedirectHandler = ({ children }: { children: React.ReactNode }) => {
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
+  const { profile, loading: profileLoading } = useProfile();
 
-  if (loading) {
+  if (loading || profileLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -48,6 +49,33 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
   if (!user) {
     return <Navigate to="/auth" replace />;
+  }
+
+  if (profile && !profile.profile_completed) {
+    return <Navigate to="/onboarding" replace />;
+  }
+
+  return <>{children}</>;
+};
+
+const OnboardingRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, loading } = useAuth();
+  const { profile, loading: profileLoading } = useProfile();
+
+  if (loading || profileLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/auth" replace />;
+  }
+
+  if (profile?.profile_completed) {
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;
@@ -63,6 +91,14 @@ const App = () => (
             <TokenRedirectHandler>
               <Routes>
                 <Route path="/auth" element={<Auth />} />
+                <Route
+                  path="/onboarding"
+                  element={
+                    <OnboardingRoute>
+                      <Onboarding />
+                    </OnboardingRoute>
+                  }
+                />
                 <Route
                   path="/"
                   element={
