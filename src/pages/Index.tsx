@@ -7,6 +7,7 @@ import { ArchivePromptDialog } from '@/components/ArchivePromptDialog';
 import { useTrips } from '@/hooks/useTrips';
 import { usePrograms } from '@/hooks/usePrograms';
 import { useProfile } from '@/hooks/useProfile';
+import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -14,6 +15,7 @@ const Index = () => {
   const { trips, addTrip, deleteTrip, totalMiles, selectedMonth, changeMonth, isCurrentMonth, refetch } = useTrips();
   const { programs, loading: programsLoading, addProgram, updateProgram, deleteProgram } = usePrograms();
   const { profile, saveProfile } = useProfile();
+  const { isPremium } = useAuth();
 
   const homeAddress = profile?.home_address || '';
   const saveHomeAddress = async (address: string) => {
@@ -88,7 +90,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <ArchivePromptDialog onExportComplete={refetch} />
+      {isPremium && <ArchivePromptDialog onExportComplete={refetch} />}
       <Header trips={trips} totalMiles={totalMiles} homeAddress={homeAddress} onSaveHomeAddress={saveHomeAddress} profile={profile} />
       
       <main className="container mx-auto space-y-6 px-4 py-6">
