@@ -120,8 +120,8 @@ export const useGasExpenses = (selectedMonth: Date) => {
       const path = `${user.id}/${Date.now()}.${ext}`;
       const { error } = await supabase.storage.from('gas-receipts').upload(path, file);
       if (error) throw error;
-      const { data: urlData } = supabase.storage.from('gas-receipts').getPublicUrl(path);
-      return urlData.publicUrl;
+      // Store the storage path, not a public URL — we'll generate signed URLs on read
+      return path;
     } catch (error) {
       console.error('Error uploading receipt:', error);
       toast.error('Failed to upload receipt');
@@ -129,8 +129,20 @@ export const useGasExpenses = (selectedMonth: Date) => {
     }
   }, [user]);
 
+  const getSignedReceiptUrl = useCallback(async (receiptPath: string): Promise<string | null> => {
+    if (!receiptPath || receiptPath.startsWith('http')) return receiptPath; // legacy public URLs
+    const { data, error } = await supabase.storage
+      .from('gas-receipts')
+      .createSignedUrl(receiptPath, 3600); // 1 hour expiry
+    if (error) {
+      console.error('Error creating signed URL:', error);
+      return null;
+    }
+    return data.signedUrl;
+  }, []);
+
   const totalGasSpent = expenses.reduce((sum, e) => sum + e.amount, 0);
   const totalGallons = expenses.reduce((sum, e) => sum + e.gallons, 0);
 
-  return { expenses, loading, addExpense, deleteExpense, uploadReceipt, totalGasSpent, totalGallons, refetch: fetchExpenses };
+  return { expenses, loading, addExpense, deleteExpense, uploadReceipt, getSignedReceiptUrl, totalGasSpent, totalGallons, refetch: fetchExpenses };
 };

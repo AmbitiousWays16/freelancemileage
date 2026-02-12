@@ -1,3 +1,4 @@
+import { useState, useCallback } from 'react';
 import { GasExpense } from '@/hooks/useGasExpenses';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,9 +10,14 @@ interface GasExpenseListProps {
   onDelete: (id: string) => void;
   totalGasSpent: number;
   totalGallons: number;
+  getSignedReceiptUrl: (path: string) => Promise<string | null>;
 }
 
-export const GasExpenseList = ({ expenses, onDelete, totalGasSpent, totalGallons }: GasExpenseListProps) => {
+export const GasExpenseList = ({ expenses, onDelete, totalGasSpent, totalGallons, getSignedReceiptUrl }: GasExpenseListProps) => {
+  const handleViewReceipt = useCallback(async (receiptPath: string) => {
+    const url = await getSignedReceiptUrl(receiptPath);
+    if (url) window.open(url, '_blank');
+  }, [getSignedReceiptUrl]);
   return (
     <Card className="shadow-card">
       <CardHeader className="pb-3">
@@ -51,9 +57,9 @@ export const GasExpenseList = ({ expenses, onDelete, totalGasSpent, totalGallons
                   </div>
                   {expense.notes && <p className="text-xs text-muted-foreground">{expense.notes}</p>}
                   {expense.receiptUrl && (
-                    <a href={expense.receiptUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
+                    <button onClick={() => handleViewReceipt(expense.receiptUrl)} className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
                       <ImageIcon className="h-3 w-3" /> View Receipt
-                    </a>
+                    </button>
                   )}
                 </div>
                 <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={() => onDelete(expense.id)}>
