@@ -95,33 +95,6 @@ export type Database = {
         }
         Relationships: []
       }
-      programs: {
-        Row: {
-          address: string
-          created_at: string
-          id: string
-          name: string
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          address?: string
-          created_at?: string
-          id?: string
-          name: string
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          address?: string
-          created_at?: string
-          id?: string
-          name?: string
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
       projects: {
         Row: {
           address: string
