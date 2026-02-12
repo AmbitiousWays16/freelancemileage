@@ -61,6 +61,7 @@ const Auth = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSettingPassword, setIsSettingPassword] = useState(false);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const hasCheckedHash = useRef(false);
 
   // Check URL hash for invite/recovery tokens on initial load only
@@ -180,6 +181,27 @@ const Auth = () => {
     }
   };
 
+  const handleForgotPassword = async () => {
+    if (!email.trim()) {
+      toast.error('Please enter your email address first');
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth`,
+      });
+      if (error) {
+        toast.error(error.message);
+      } else {
+        toast.success('Password reset email sent! Check your inbox.');
+        setIsForgotPassword(false);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -291,6 +313,36 @@ const Auth = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
+              {isForgotPassword ? (
+                <div className="space-y-3">
+                  <p className="text-sm text-muted-foreground">
+                    Enter your email above and we'll send you a password reset link.
+                  </p>
+                  <Button
+                    className="w-full"
+                    onClick={handleForgotPassword}
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                    Send Reset Link
+                  </Button>
+                  <Button
+                    variant="link"
+                    className="w-full text-sm"
+                    onClick={() => setIsForgotPassword(false)}
+                  >
+                    Back to sign in
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  <Button
+                    variant="link"
+                    className="w-full text-sm p-0 h-auto"
+                    onClick={() => setIsForgotPassword(true)}
+                  >
+                    Forgot your password?
+                  </Button>
               <Button
                 className="w-full"
                 onClick={() => handleAuth('signin')}
@@ -316,6 +368,8 @@ const Auth = () => {
                 <GoogleIcon />
                 Continue with Google
               </Button>
+                </>
+              )}
             </TabsContent>
             <TabsContent value="signup" className="space-y-4 pt-4">
               <div className="space-y-2">
