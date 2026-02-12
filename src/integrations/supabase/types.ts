@@ -47,6 +47,48 @@ export type Database = {
         }
         Relationships: []
       }
+      gas_expenses: {
+        Row: {
+          amount: number
+          created_at: string
+          date: string
+          gallons: number
+          id: string
+          notes: string
+          price_per_gallon: number
+          receipt_url: string
+          station_name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          date: string
+          gallons?: number
+          id?: string
+          notes?: string
+          price_per_gallon?: number
+          receipt_url?: string
+          station_name?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          date?: string
+          gallons?: number
+          id?: string
+          notes?: string
+          price_per_gallon?: number
+          receipt_url?: string
+          station_name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           business_address: string
