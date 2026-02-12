@@ -24,7 +24,7 @@ const Index = () => {
   } = useClients();
   const { profile, saveProfile, uploadBranding } = useProfile();
   const { isPremium } = useAuth();
-  const { expenses, addExpense, deleteExpense, uploadReceipt, totalGasSpent, totalGallons } = useGasExpenses(selectedMonth);
+  const { expenses, addExpense, deleteExpense, uploadReceipt, getSignedReceiptUrl, totalGasSpent, totalGallons } = useGasExpenses(selectedMonth);
 
   const homeAddress = profile?.home_address || '';
   const saveHomeAddress = async (address: string) => { await saveProfile({ home_address: address }); };
@@ -123,6 +123,7 @@ const Index = () => {
               onDelete={deleteExpense}
               totalGasSpent={totalGasSpent}
               totalGallons={totalGallons}
+              getSignedReceiptUrl={getSignedReceiptUrl}
             />
           </div>
         )}
