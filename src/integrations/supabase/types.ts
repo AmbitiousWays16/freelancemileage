@@ -14,41 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      approval_history: {
-        Row: {
-          acted_at: string
-          action: Database["public"]["Enums"]["approval_action"]
-          approver_id: string
-          approver_role: Database["public"]["Enums"]["app_role"]
-          id: string
-          voucher_id: string
-        }
-        Insert: {
-          acted_at?: string
-          action: Database["public"]["Enums"]["approval_action"]
-          approver_id: string
-          approver_role: Database["public"]["Enums"]["app_role"]
-          id?: string
-          voucher_id: string
-        }
-        Update: {
-          acted_at?: string
-          action?: Database["public"]["Enums"]["approval_action"]
-          approver_id?: string
-          approver_role?: Database["public"]["Enums"]["app_role"]
-          id?: string
-          voucher_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "approval_history_voucher_id_fkey"
-            columns: ["voucher_id"]
-            isOneToOne: false
-            referencedRelation: "mileage_vouchers"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       clients: {
         Row: {
           address: string
@@ -77,45 +42,6 @@ export type Database = {
           id?: string
           name?: string
           phone?: string
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
-      mileage_vouchers: {
-        Row: {
-          created_at: string
-          current_approver_id: string | null
-          id: string
-          month: string
-          rejection_reason: string | null
-          status: Database["public"]["Enums"]["voucher_status"]
-          submitted_at: string | null
-          total_miles: number
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          current_approver_id?: string | null
-          id?: string
-          month: string
-          rejection_reason?: string | null
-          status?: Database["public"]["Enums"]["voucher_status"]
-          submitted_at?: string | null
-          total_miles?: number
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          current_approver_id?: string | null
-          id?: string
-          month?: string
-          rejection_reason?: string | null
-          status?: Database["public"]["Enums"]["voucher_status"]
-          submitted_at?: string | null
-          total_miles?: number
           updated_at?: string
           user_id?: string
         }
@@ -285,50 +211,15 @@ export type Database = {
         }
         Relationships: []
       }
-      user_roles: {
-        Row: {
-          created_at: string
-          id: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          role?: Database["public"]["Enums"]["app_role"]
-          user_id?: string
-        }
-        Relationships: []
-      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
+      [_ in never]: never
     }
     Enums: {
-      app_role: "admin" | "user" | "supervisor" | "vp" | "coo" | "accountant"
-      approval_action: "approve" | "reject"
-      voucher_status:
-        | "draft"
-        | "pending_supervisor"
-        | "pending_vp"
-        | "pending_coo"
-        | "approved"
-        | "rejected"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
@@ -455,17 +346,6 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {
-      app_role: ["admin", "user", "supervisor", "vp", "coo", "accountant"],
-      approval_action: ["approve", "reject"],
-      voucher_status: [
-        "draft",
-        "pending_supervisor",
-        "pending_vp",
-        "pending_coo",
-        "approved",
-        "rejected",
-      ],
-    },
+    Enums: {},
   },
 } as const
