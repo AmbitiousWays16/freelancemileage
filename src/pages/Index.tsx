@@ -84,6 +84,7 @@ const Index = () => {
               projects={projects}
               homeAddress={homeAddress}
               clientsLoading={clientsLoading}
+              isPremium={isPremium}
               onAddClient={addClient}
               onUpdateClient={updateClient}
               onDeleteClient={deleteClient}
