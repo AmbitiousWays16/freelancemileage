@@ -1,4 +1,5 @@
 import { Car, LogOut, Crown } from 'lucide-react';
+import { ProfileEditDialog } from './ProfileEditDialog';
 import { Link } from 'react-router-dom';
 import { ExportButton } from './ExportButton';
 import { InvoiceExport } from './InvoiceExport';
@@ -18,11 +19,12 @@ interface HeaderProps {
   homeAddress: string;
   onSaveHomeAddress: (address: string) => Promise<void>;
   profile: Profile | null;
+  onSaveProfile: (updates: Partial<Profile>) => Promise<boolean>;
   onUploadBranding?: (file: File, type: 'logo' | 'banner') => Promise<string | null>;
   onRemoveBranding?: (type: 'logo' | 'banner') => Promise<void>;
 }
 
-export const Header = ({ trips, totalMiles, homeAddress, onSaveHomeAddress, profile, onUploadBranding, onRemoveBranding }: HeaderProps) => {
+export const Header = ({ trips, totalMiles, homeAddress, onSaveHomeAddress, profile, onSaveProfile, onUploadBranding, onRemoveBranding }: HeaderProps) => {
   const { signOut, user, isPremium } = useAuth();
   const displayName = profile?.first_name
     ? `${profile.first_name} ${profile.last_name}`.trim()
@@ -87,6 +89,7 @@ export const Header = ({ trips, totalMiles, homeAddress, onSaveHomeAddress, prof
           )}
           <ExportButton trips={trips} totalMiles={totalMiles} />
           <HomeAddressSettings homeAddress={homeAddress} onSave={onSaveHomeAddress} />
+          <ProfileEditDialog profile={profile} onSave={onSaveProfile} />
           <Button variant="ghost" size="icon" onClick={signOut} title="Sign out">
             <LogOut className="h-5 w-5" />
           </Button>
