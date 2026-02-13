@@ -69,6 +69,7 @@ const Index = () => {
         homeAddress={homeAddress}
         onSaveHomeAddress={saveHomeAddress}
         profile={profile}
+        onSaveProfile={saveProfile}
         onUploadBranding={uploadBranding}
         onRemoveBranding={async (type) => {
           await saveProfile({ [type === 'logo' ? 'company_logo_url' : 'company_banner_url']: '' });
