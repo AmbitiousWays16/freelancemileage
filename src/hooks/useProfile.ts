@@ -29,7 +29,7 @@ export const useProfile = () => {
       .from('profiles')
       .select('first_name, last_name, home_address, business_address, business_type, profile_completed, email, company_logo_url, company_banner_url')
       .eq('user_id', user.id)
-      .single();
+      .maybeSingle();
     if (!error && data) {
       setProfile(data);
     }
@@ -44,13 +44,23 @@ export const useProfile = () => {
     if (!user) return false;
     const { error } = await supabase
       .from('profiles')
-      .update(updates)
-      .eq('user_id', user.id);
+      .upsert({ user_id: user.id, ...updates }, { onConflict: 'user_id' });
     if (error) {
       toast.error('Failed to save profile');
       return false;
     }
-    setProfile(prev => prev ? { ...prev, ...updates } : null);
+    setProfile(prev => prev ? { ...prev, ...updates } : {
+      first_name: '',
+      last_name: '',
+      home_address: '',
+      business_address: '',
+      business_type: '',
+      profile_completed: false,
+      email: null,
+      company_logo_url: '',
+      company_banner_url: '',
+      ...updates,
+    } as Profile);
     return true;
   };
 
