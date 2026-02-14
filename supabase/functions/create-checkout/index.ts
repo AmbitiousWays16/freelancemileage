@@ -45,7 +45,7 @@ serve(async (req) => {
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       customer_email: customerId ? undefined : user.email,
-      line_items: [{ price: "price_1SzsloIAPfWCRBoHJ5tvB9d0", quantity: 1 }],
+      line_items: [{ price: "price_1T0DurIkrnfR1aXT61XsQSPB", quantity: 1 }],
       mode: "subscription",
       success_url: `${req.headers.get("origin") || "https://freelancemileage.lovable.app"}/`,
       cancel_url: `${req.headers.get("origin") || "https://freelancemileage.lovable.app"}/onboarding`,
