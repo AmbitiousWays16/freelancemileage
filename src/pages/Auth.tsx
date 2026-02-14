@@ -279,9 +279,7 @@ const Auth = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="mx-auto mb-4">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl gradient-primary mx-auto">
-              <Car className="h-8 w-8 text-primary-foreground" />
-            </div>
+            <img src={miletrackLogo} alt="MileTrack logo" className="h-16 w-16 rounded-2xl mx-auto" />
           </div>
           <CardTitle className="text-2xl">MileTrack</CardTitle>
           <CardDescription>Track your business mileage & generate invoices</CardDescription>
