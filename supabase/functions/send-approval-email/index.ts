@@ -260,9 +260,8 @@ const handler = async (req: Request): Promise<Response> => {
     const origin = req.headers.get('Origin');
     const corsHeaders = getCorsHeaders(origin);
     console.error("Error in send-approval-email function:", error);
-    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return new Response(
-      JSON.stringify({ error: errorMessage }),
+      JSON.stringify({ error: "Failed to send email notification" }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
