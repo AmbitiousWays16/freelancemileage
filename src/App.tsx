@@ -121,43 +121,45 @@ const App = () => (
         <BrowserRouter>
           <AuthProvider>
             <TokenRedirectHandler>
-              <Routes>
-                <Route path="/auth" element={<Auth />} />
-                <Route
-                  path="/onboarding"
-                  element={
-                    <OnboardingRoute>
-                      <Onboarding />
-                    </OnboardingRoute>
-                  }
-                />
-                <Route
-                  path="/"
-                  element={
-                    <ProtectedRoute>
-                      <Index />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/contact"
-                  element={
-                    <ProtectedRoute>
-                      <Contact />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/admin"
-                  element={
-                    <AdminRoute>
-                      <Admin />
-                    </AdminRoute>
-                  }
-                />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+              <main>
+                <Routes>
+                  <Route path="/auth" element={<Auth />} />
+                  <Route
+                    path="/onboarding"
+                    element={
+                      <OnboardingRoute>
+                        <Onboarding />
+                      </OnboardingRoute>
+                    }
+                  />
+                  <Route
+                    path="/"
+                    element={
+                      <ProtectedRoute>
+                        <Index />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/contact"
+                    element={
+                      <ProtectedRoute>
+                        <Contact />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin"
+                    element={
+                      <AdminRoute>
+                        <Admin />
+                      </AdminRoute>
+                    }
+                  />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </main>
             </TokenRedirectHandler>
           </AuthProvider>
         </BrowserRouter>
