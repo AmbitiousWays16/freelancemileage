@@ -108,9 +108,8 @@ serve(async (req: Request) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error: unknown) {
-    const errMsg = error instanceof Error ? error.message : 'Unknown error';
-    console.error('send-support-email error:', errMsg);
-    return new Response(JSON.stringify({ error: errMsg }), {
+    console.error('send-support-email error:', error instanceof Error ? error.message : 'Unknown error');
+    return new Response(JSON.stringify({ error: 'Failed to send email' }), {
       status: 500,
       headers: { ...getCorsHeaders(req.headers.get('Origin')), 'Content-Type': 'application/json' },
     });
