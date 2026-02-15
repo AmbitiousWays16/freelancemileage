@@ -27,6 +27,7 @@ export default defineConfig(({ mode }) => ({
         '/onboarding',
         '/contact',
       ],
+      generateRobotsTxt: false,
     }),
   ].filter(Boolean),
   resolve: {

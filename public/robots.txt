@@ -1,14 +1,8 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
+Sitemap: https://miletrack.triptrackerapp.tech/sitemap.xml
 
 User-agent: *
-Allow: /
+Disallow: /admin
+Disallow: /onboarding
+Disallow: /contact
+Disallow: /
+Allow: /auth
