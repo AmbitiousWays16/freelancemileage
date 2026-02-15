@@ -98,10 +98,10 @@ tr:nth-child(even){background:#f8fafc}
 @media print{body{padding:20px}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style></head><body>
 <div class="inv-header">
-${profile?.company_banner_url ? `<div style="margin-bottom:15px"><img src="${profile.company_banner_url}" alt="Company Banner" style="width:100%;max-height:120px;object-fit:cover;border-radius:6px"/></div>` : ''}
+${profile?.company_banner_url ? `<div style="margin-bottom:15px"><img src="${profile.company_banner_url}" alt="Company banner for invoice header" style="width:100%;max-height:120px;object-fit:cover;border-radius:6px"/></div>` : ''}
   <div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:20px;border-bottom:3px solid #3b82f6">
     <div style="display:flex;align-items:center;gap:15px">
-      ${profile?.company_logo_url ? `<img src="${profile.company_logo_url}" alt="Logo" style="height:50px;width:50px;object-fit:contain;border-radius:8px"/>` : ''}
+      ${profile?.company_logo_url ? `<img src="${profile.company_logo_url}" alt="Company logo for invoice" style="height:50px;width:50px;object-fit:contain;border-radius:8px"/>` : ''}
       <div class="inv-title">INVOICE</div>
     </div>
     <div class="inv-meta">

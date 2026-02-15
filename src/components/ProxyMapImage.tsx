@@ -18,7 +18,7 @@ export const ProxyMapImage = ({
   routeMapData, 
   routeUrl, 
   className = '',
-  alt = 'Route Map'
+  alt = 'Route map showing trip from origin to destination'
 }: ProxyMapImageProps) => {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
