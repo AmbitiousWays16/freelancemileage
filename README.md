@@ -16,6 +16,10 @@ MileTrack is a specialized utility designed for independent contractors, deliver
 - [Contributing](#-contributing)
 - [License](#-license)
 
+> **👉 New to MileTrack?** Check out the [Quick Start Guide](QUICKSTART.md) for a fast introduction!
+
+> **🏗️ Developer?** See the [Architecture Documentation](ARCHITECTURE.md) for technical details.
+
 ## 🌟 Features
 
 ### Core Mileage Tracking
