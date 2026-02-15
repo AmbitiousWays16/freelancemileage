@@ -169,7 +169,7 @@ const Onboarding = () => {
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl gradient-primary">
             <User className="h-8 w-8 text-primary-foreground" />
           </div>
-          <CardTitle className="text-2xl">Complete Your Profile</CardTitle>
+          <CardTitle as="h1" className="text-2xl">Complete Your Profile</CardTitle>
           <CardDescription>Tell us about yourself to get started</CardDescription>
         </CardHeader>
         <CardContent className="space-y-5">

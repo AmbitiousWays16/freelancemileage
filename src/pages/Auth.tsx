@@ -221,7 +221,7 @@ const Auth = () => {
                 <Car className="h-8 w-8 text-primary-foreground" />
               </div>
             </div>
-            <CardTitle className="text-2xl">Set Your Password</CardTitle>
+            <CardTitle as="h1" className="text-2xl">Set Your Password</CardTitle>
             <CardDescription>
               Welcome! Please create a password for your account.
             </CardDescription>

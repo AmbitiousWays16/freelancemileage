@@ -104,7 +104,7 @@ const Contact = () => {
                 <MessageSquare className="h-5 w-5 text-primary-foreground" />
               </div>
               <div>
-                <CardTitle>Contact Support</CardTitle>
+                <CardTitle as="h1">Contact Support</CardTitle>
                 <CardDescription>Need help? Send us a message and we'll get back to you.</CardDescription>
               </div>
             </div>
