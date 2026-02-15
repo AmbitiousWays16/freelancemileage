@@ -195,7 +195,7 @@ export const ArchivePromptDialog = ({ onExportComplete }: ArchivePromptDialogPro
             </div>
             <div style="background: #f8fafc; border-radius: 6px; padding: 15px; text-align: center;">
               ${mapImageBase64 ? `
-                <img src="${mapImageBase64}" alt="Route Map" style="width: 100%; max-width: 600px; height: auto; border-radius: 6px; margin-bottom: 10px;" />
+                <img src="${mapImageBase64}" alt="Route map showing trip from ${safeFromAddress} to ${safeToAddress}" style="width: 100%; max-width: 600px; height: auto; border-radius: 6px; margin-bottom: 10px;" />
               ` : `
                 <p style="margin: 0 0 8px 0; font-size: 12px; color: #64748b;">Route Map</p>
               `}

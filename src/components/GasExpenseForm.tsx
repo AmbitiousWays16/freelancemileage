@@ -118,7 +118,7 @@ export const GasExpenseForm = ({ onSubmit, onUploadReceipt }: GasExpenseFormProp
             <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
             {receiptPreview ? (
               <div className="relative inline-block">
-                <img src={receiptPreview} alt="Receipt" className="h-24 w-24 rounded-lg border border-border object-cover" />
+                <img src={receiptPreview} alt="Gas expense receipt preview" className="h-24 w-24 rounded-lg border border-border object-cover" />
                 <button type="button" onClick={clearReceipt} className="absolute -right-2 -top-2 rounded-full bg-destructive p-1 text-destructive-foreground">
                   <X className="h-3 w-3" />
                 </button>

@@ -61,7 +61,7 @@ export const CompanyBrandingUpload = ({ profile, onUpload, onRemove }: CompanyBr
             <p className="text-xs text-muted-foreground">Shown on invoice header. Recommended: square, under 5MB.</p>
             {logoUrl ? (
               <div className="flex items-center gap-3">
-                <img src={logoUrl} alt="Logo" className="h-16 w-16 rounded-lg border object-contain bg-muted p-1" />
+                <img src={logoUrl} alt="Company logo for invoice header" className="h-16 w-16 rounded-lg border object-contain bg-muted p-1" />
                 <div className="flex gap-2">
                   <Button variant="outline" size="sm" onClick={() => logoRef.current?.click()}>
                     Replace
@@ -86,7 +86,7 @@ export const CompanyBrandingUpload = ({ profile, onUpload, onRemove }: CompanyBr
             <p className="text-xs text-muted-foreground">Wide header image for invoices. Recommended: 800×200px, under 5MB.</p>
             {bannerUrl ? (
               <div className="space-y-2">
-                <img src={bannerUrl} alt="Banner" className="w-full h-24 rounded-lg border object-cover bg-muted" />
+                <img src={bannerUrl} alt="Company banner image for invoice header" className="w-full h-24 rounded-lg border object-cover bg-muted" />
                 <div className="flex gap-2">
                   <Button variant="outline" size="sm" onClick={() => bannerRef.current?.click()}>
                     Replace
