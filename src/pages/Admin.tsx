@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, Loader2, Shield, Users, TicketCheck, MessageSquare, Send } from 'lucide-react';
+import { ArrowLeft, Loader2, Shield, Users, TicketCheck, MessageSquare, Send, LogOut } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 
@@ -33,7 +33,7 @@ interface UserProfile {
 
 const Admin = () => {
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, signOut } = useAuth();
   const [isAdmin, setIsAdmin] = useState(false);
   const [checking, setChecking] = useState(true);
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
@@ -182,9 +182,14 @@ const Admin = () => {
   return (
     <div className="min-h-screen bg-background p-4">
       <div className="container mx-auto max-w-5xl">
-        <Button variant="ghost" className="mb-6" onClick={() => navigate('/')}>
-          <ArrowLeft className="h-4 w-4 mr-2" /> Back to Dashboard
-        </Button>
+        <div className="flex items-center justify-between mb-6">
+          <Button variant="ghost" onClick={() => navigate('/')}>
+            <ArrowLeft className="h-4 w-4 mr-2" /> Back to Dashboard
+          </Button>
+          <Button variant="outline" size="sm" onClick={signOut}>
+            <LogOut className="h-4 w-4 mr-2" /> Sign Out
+          </Button>
+        </div>
 
         <div className="flex items-center gap-3 mb-6">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl gradient-primary">
