@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     mode === "development" && componentTagger(),
-    sitemap({
+    mode === "production" && sitemap({
       hostname: 'https://miletrack.triptrackerapp.tech',
       dynamicRoutes: [
         '/',
