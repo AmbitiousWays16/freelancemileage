@@ -220,7 +220,7 @@ const Auth = () => {
                 <Car className="h-8 w-8 text-primary-foreground" />
               </div>
             </div>
-            <CardTitle className="text-2xl">Set Your Password</CardTitle>
+            <CardTitle as="h1" className="text-2xl">Set Your Password</CardTitle>
             <CardDescription>
               Welcome! Please create a password for your account.
             </CardDescription>
@@ -280,7 +280,7 @@ const Auth = () => {
           <div className="mx-auto mb-4">
             <img src={miletrackLogo} alt="MileTrack logo" className="h-16 w-16 rounded-2xl mx-auto" />
           </div>
-          <CardTitle className="text-2xl">MileTrack</CardTitle>
+          <CardTitle as="h1" className="text-2xl">MileTrack</CardTitle>
           <CardDescription>Track your business mileage & generate invoices</CardDescription>
         </CardHeader>
         <CardContent>
