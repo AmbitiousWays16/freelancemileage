@@ -13,6 +13,7 @@ import { Separator } from '@/components/ui/separator';
 import { Loader2, Car } from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import { FeaturesOverview } from '@/components/FeaturesOverview';
 
 const GoogleIcon = () => (
   <svg className="h-5 w-5" viewBox="0 0 24 24">
@@ -274,151 +275,155 @@ const Auth = () => {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <div className="mx-auto mb-4">
-            <img src={miletrackLogo} alt="MileTrack logo" className="h-16 w-16 rounded-2xl mx-auto" />
-          </div>
-          <CardTitle className="text-2xl">MileTrack</CardTitle>
-          <CardDescription>Track your business mileage & generate invoices</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Tabs defaultValue="signin" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="signin">Sign In</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
-            </TabsList>
-            <TabsContent value="signin" className="space-y-4 pt-4">
-              <div className="space-y-2">
-                <Label htmlFor="signin-email">Email</Label>
-                <Input
-                  id="signin-email"
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="signin-password">Password</Label>
-                <Input
-                  id="signin-password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              {isForgotPassword ? (
-                <div className="space-y-3">
-                  <p className="text-sm text-muted-foreground">
-                    Enter your email above and we'll send you a password reset link.
-                  </p>
-                  <Button
-                    className="w-full"
-                    onClick={handleForgotPassword}
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                    Send Reset Link
-                  </Button>
-                  <Button
-                    variant="link"
-                    className="w-full text-sm"
-                    onClick={() => setIsForgotPassword(false)}
-                  >
-                    Back to sign in
-                  </Button>
+    <>
+      <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <div className="mx-auto mb-4">
+              <img src={miletrackLogo} alt="MileTrack - Business mileage tracking and invoicing application logo" className="h-16 w-16 rounded-2xl mx-auto" />
+            </div>
+            <CardTitle className="text-2xl">MileTrack</CardTitle>
+            <CardDescription>Track your business mileage & generate invoices</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Tabs defaultValue="signin" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="signin">Sign In</TabsTrigger>
+                <TabsTrigger value="signup">Sign Up</TabsTrigger>
+              </TabsList>
+              <TabsContent value="signin" className="space-y-4 pt-4">
+                <div className="space-y-2">
+                  <Label htmlFor="signin-email">Email</Label>
+                  <Input
+                    id="signin-email"
+                    type="email"
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
                 </div>
-              ) : (
-                <>
-                  <Button
-                    variant="link"
-                    className="w-full text-sm p-0 h-auto"
-                    onClick={() => setIsForgotPassword(true)}
-                  >
-                    Forgot your password?
-                  </Button>
-              <Button
-                className="w-full"
-                onClick={() => handleAuth('signin')}
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                Sign In
-              </Button>
-              
-              <div className="relative my-4">
-                <Separator />
-                <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-xs text-muted-foreground">
-                  or
-                </span>
-              </div>
-              
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={handleGoogleSignIn}
-                disabled={isSubmitting}
-              >
-                <GoogleIcon />
-                Continue with Google
-              </Button>
-                </>
-              )}
-            </TabsContent>
-            <TabsContent value="signup" className="space-y-4 pt-4">
-              <div className="space-y-2">
-                <Label htmlFor="signup-email">Email</Label>
-                <Input
-                  id="signup-email"
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="signup-password">Password</Label>
-                <Input
-                  id="signup-password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <Button
-                className="w-full"
-                onClick={() => handleAuth('signup')}
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                Create Account
-              </Button>
-              
-              <div className="relative my-4">
-                <Separator />
-                <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-xs text-muted-foreground">
-                  or
-                </span>
-              </div>
-              
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={handleGoogleSignIn}
-                disabled={isSubmitting}
-              >
-                <GoogleIcon />
-                Continue with Google
-              </Button>
-            </TabsContent>
-          </Tabs>
-        </CardContent>
-      </Card>
-    </div>
+                <div className="space-y-2">
+                  <Label htmlFor="signin-password">Password</Label>
+                  <Input
+                    id="signin-password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                {isForgotPassword ? (
+                  <div className="space-y-3">
+                    <p className="text-sm text-muted-foreground">
+                      Enter your email above and we'll send you a password reset link.
+                    </p>
+                    <Button
+                      className="w-full"
+                      onClick={handleForgotPassword}
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                      Send Reset Link
+                    </Button>
+                    <Button
+                      variant="link"
+                      className="w-full text-sm"
+                      onClick={() => setIsForgotPassword(false)}
+                    >
+                      Back to sign in
+                    </Button>
+                  </div>
+                ) : (
+                  <>
+                    <Button
+                      variant="link"
+                      className="w-full text-sm p-0 h-auto"
+                      onClick={() => setIsForgotPassword(true)}
+                    >
+                      Forgot your password?
+                    </Button>
+                <Button
+                  className="w-full"
+                  onClick={() => handleAuth('signin')}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                  Sign In
+                </Button>
+                
+                <div className="relative my-4">
+                  <Separator />
+                  <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-xs text-muted-foreground">
+                    or
+                  </span>
+                </div>
+                
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={handleGoogleSignIn}
+                  disabled={isSubmitting}
+                >
+                  <GoogleIcon />
+                  Continue with Google
+                </Button>
+                  </>
+                )}
+              </TabsContent>
+              <TabsContent value="signup" className="space-y-4 pt-4">
+                <div className="space-y-2">
+                  <Label htmlFor="signup-email">Email</Label>
+                  <Input
+                    id="signup-email"
+                    type="email"
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="signup-password">Password</Label>
+                  <Input
+                    id="signup-password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <Button
+                  className="w-full"
+                  onClick={() => handleAuth('signup')}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                  Create Account
+                </Button>
+                
+                <div className="relative my-4">
+                  <Separator />
+                  <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-xs text-muted-foreground">
+                    or
+                  </span>
+                </div>
+                
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={handleGoogleSignIn}
+                  disabled={isSubmitting}
+                >
+                  <GoogleIcon />
+                  Continue with Google
+                </Button>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
+      </div>
+      
+      <FeaturesOverview />
+    </>
   );
 };
 
