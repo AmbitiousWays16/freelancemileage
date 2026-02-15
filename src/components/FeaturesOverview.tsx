@@ -95,12 +95,7 @@ export const FeaturesOverview = () => {
             on your work while we handle the details. Join thousands of independent contractors who trust MileTrack to 
             maximize their tax deductions and streamline their business operations.
           </p>
-          <div className="pt-4">
-            <p className="text-sm text-muted-foreground">
-              <strong className="text-foreground">Keywords:</strong> mileage tracker, freelance invoicing, business travel deduction, 
-              IRS mileage compliance, mileage log app, independent contractor tools, tax deduction tracker, business expense tracking
-            </p>
-          </div>
+
         </div>
       </div>
     </section>
