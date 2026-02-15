@@ -1,29 +1,34 @@
-MileTrack 🚗
-The Smarter Way for Freelancers to Track Their Drive.
+# MileTrack 🚗 
 
-🌟 Features
-One-Tap Tracking: Effortlessly log business miles.
+**The Smarter Way for Freelancers to Track Their Drive.**
 
-Stripe Integration: Secure handling of premium subscriptions and invoicing.
+MileTrack is a specialized utility designed for independent contractors, delivery drivers, and freelancers to simplify the process of mileage logging and business expense reporting.
 
-Google Auth: Seamless and secure login experience.
+---
 
-Expense Reporting: Tax-ready exports for independent contractors.
+## 🌟 Features
+* **One-Tap Tracking:** Effortlessly log business miles with a clean, mobile-first interface.
+* **Stripe Integration:** Securely manage premium subscriptions and professional invoicing.
+* **Google Auth:** Seamless and secure login experience via Google SDK.
+* **Expense Reporting:** Generate tax-ready exports (CSV/PDF) for easy filing.
+* **Profile Management:** Store business details for automated invoice generation.
 
-🛠️ Tech Stack
-Frontend: React + TypeScript + Tailwind CSS
+## 🛠️ Tech Stack
+* **Frontend:** [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) + [Tailwind CSS](https://tailwindcss.com/)
+* **Backend/Database:** [Supabase](https://supabase.com/) (PostgreSQL + Auth)
+* **Payments:** [Stripe API](https://stripe.com/)
+* **UI Components:** [Shadcn UI](https://ui.shadcn.com/) + [Lucide Icons](https://lucide.dev/)
+* **Build Tool:** [Vite](https://vitejs.dev/)
 
-Backend/Database: Supabase
+## 🚀 Getting Started
 
-Payments: Stripe
+### Prerequisites
+- Node.js (v18+)
+- A Supabase Project
+- A Stripe Developer Account
 
-UI Components: Shadcn UI + Lucide Icons
-
-🚀 Getting Started
-Clone the repo: git clone <your-url>
-
-Install dependencies: npm install
-
-Set up Environment Variables: Create a .env file with your SUPABASE_URL and STRIPE_PUBLIC_KEY.
-
-Run Dev Server: npm run dev
+### Installation
+1. **Clone the repo:**
+   ```bash
+   git clone [https://github.com/AmbitiousWays16/freelancemileage.git](https://github.com/AmbitiousWays16/freelancemileage.git)
+   cd freelancemileage
