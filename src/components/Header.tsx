@@ -1,4 +1,4 @@
-import { Car, LogOut, Crown } from 'lucide-react';
+import { Car, LogOut, Crown, MessageSquare } from 'lucide-react';
 import { ProfileEditDialog } from './ProfileEditDialog';
 import { Link } from 'react-router-dom';
 import { ExportButton } from './ExportButton';
@@ -88,6 +88,11 @@ export const Header = ({ trips, totalMiles, homeAddress, onSaveHomeAddress, prof
             </Button>
           )}
           <ExportButton trips={trips} totalMiles={totalMiles} />
+          <Link to="/contact">
+            <Button variant="ghost" size="icon" title="Contact Support">
+              <MessageSquare className="h-5 w-5" />
+            </Button>
+          </Link>
           <HomeAddressSettings homeAddress={homeAddress} onSave={onSaveHomeAddress} />
           <ProfileEditDialog profile={profile} onSave={onSaveProfile} />
           <Button variant="ghost" size="icon" onClick={signOut} title="Sign out">
