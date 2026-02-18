@@ -63,7 +63,8 @@ export const Header = ({ trips, totalMiles, homeAddress, onSaveHomeAddress, prof
       });
       if (error) throw error;
       if (data?.url) window.open(data.url, '_blank');
-    } catch {
+    } catch (err) {
+      console.error('Upgrade error:', err);
       toast.error('Could not start checkout.');
     }
   };
