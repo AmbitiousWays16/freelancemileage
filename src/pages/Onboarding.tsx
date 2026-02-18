@@ -68,7 +68,17 @@ const Onboarding = () => {
   const handlePremiumPlan = async () => {
     setCheckoutLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('create-checkout');
+      const { data: sessionData } = await supabase.auth.getSession();
+      const accessToken = sessionData.session?.access_token;
+      if (!accessToken) {
+        toast.error('Please log in to continue.');
+        setCheckoutLoading(false);
+        return;
+      }
+
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
       if (error) throw error;
       if (data?.url) {
         window.open(data.url, '_blank');
