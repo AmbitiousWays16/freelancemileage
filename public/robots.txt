@@ -1,5 +1,4 @@
 Sitemap: https://miletrack.triptrackerapp.tech/sitemap.xml
 
 User-agent: *
-Allow: /auth
-Disallow: /
+Allow: /
