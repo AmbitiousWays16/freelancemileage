@@ -62,10 +62,15 @@ export const Header = ({ trips, totalMiles, homeAddress, onSaveHomeAddress, prof
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       if (error) throw error;
-      if (data?.url) window.open(data.url, '_blank');
+      if (data?.error) throw new Error(data.error);
+      if (data?.url) {
+        window.open(data.url, '_blank');
+      } else {
+        throw new Error('No checkout URL returned');
+      }
     } catch (err) {
       console.error('Upgrade error:', err);
-      toast.error('Could not start checkout.');
+      toast.error('Could not start checkout. Please try again.');
     }
   };
 
