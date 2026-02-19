@@ -8,8 +8,8 @@ const getCorsHeaders = (origin: string | null) => {
   const isAllowed = origin && (
     origin.endsWith('.lovable.app') ||
     origin.endsWith('.lovableproject.com') ||
-    origin === 'https://freelancemileage.lovable.app' ||
-    origin.startsWith('https://miletrack.triptrackerapp.tech/')
+    origin === 'https://miletrack.triptrackerapp.tech' ||
+    origin.startsWith('http://localhost:')
   );
   return {
     'Access-Control-Allow-Origin': isAllowed ? origin : 'https://miletrack.triptrackerapp.tech',
