@@ -12,7 +12,7 @@ const getCorsHeaders = (origin: string | null) => {
     origin.startsWith('https://miletrack.triptrackerapp.tech/')
   );
   return {
-    'Access-Control-Allow-Origin': isAllowed ? origin : 'https://freelancemileage.lovable.app',
+    'Access-Control-Allow-Origin': isAllowed ? origin : 'https://miletrack.triptrackerapp.tech',
     'Access-Control-Allow-Headers': ALLOWED_HEADERS,
   };
 };
