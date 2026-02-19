@@ -5,7 +5,7 @@ import { Resend } from "https://esm.sh/resend@2.0.0";
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const allowedOrigins = [
-  'https://freelancemileage.lovable.app',
+  'https://miletrack.triptrackerapp.tech',
   'http://localhost:5173',
   'http://localhost:8080',
 ];
