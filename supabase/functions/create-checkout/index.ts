@@ -9,7 +9,7 @@ const getCorsHeaders = (origin: string | null) => {
     origin.endsWith('.lovable.app') ||
     origin.endsWith('.lovableproject.com') ||
     origin === 'https://freelancemileage.lovable.app' ||
-    origin.startsWith('http://localhost:')
+    origin.startsWith('https://miletrack.triptrackerapp.tech/')
   );
   return {
     'Access-Control-Allow-Origin': isAllowed ? origin : 'https://freelancemileage.lovable.app',
@@ -58,7 +58,7 @@ serve(async (req) => {
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       customer_email: customerId ? undefined : user.email,
-      line_items: [{ price: "price_1T0DurIkrnfR1aXT61XsQSPB", quantity: 1 }],
+      line_items: [{ price: "prod_TyAFM24WEAF0rq", quantity: 1 }],
       mode: "subscription",
       success_url: `${origin || "https://freelancemileage.lovable.app"}/`,
       cancel_url: `${origin || "https://freelancemileage.lovable.app"}/onboarding`,
